@@ -176,10 +176,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     switch(keycode) {
       case VOLZERO:
-	    for (int i = 0; i < 50; i++) {
+        register_code(KC_MUTE);
+        unregister_code(KC_MUTE);
+        for (int i = 0; i < 50; i++) {
   	      register_code(KC_VOLD);
           unregister_code(KC_VOLD);
         }
+        register_code(KC_MUTE);
+        unregister_code(KC_MUTE);
         return false; break;
       case NEXT_SONG:
         register_code(KC_MNXT);
