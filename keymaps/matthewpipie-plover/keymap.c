@@ -20,8 +20,8 @@ enum custom_keycodes {
   PLOVER_TO_QWERTY = SAFE_RANGE,
   QWERTY_TO_PLOVER,
   VOLZERO,
-  PREV_SONG
-  NEXT_SONG,
+  PREV_SONG,
+  NEXT_SONG
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  
 [_FN] = KEYMAP( \
   KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-  KC_TRNS, KC_F1,   KC_F2,             KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F0,   KC_TRNS, \
+  KC_TRNS, KC_F1,   KC_F2,             KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_TRNS, \
   KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
   RESET,   DEBUG,   MAGIC_TOGGLE_NKRO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
 ),
@@ -177,16 +177,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch(keycode) {
       case VOLZERO:
 	    for (int i = 0; i < 50; i++) {
-  	      SEND_STRING(SS_TAP(X_VOLD));
+  	      register_code(KC_VOLD);
+          unregister_code(KC_VOLD);
         }
         return false; break;
       case NEXT_SONG:
-        SEND_STRING(SS_TAP(X_MNXT));
-        SEND_STRING(SS_TAP(X_MFFD));
+        register_code(KC_MNXT);
+        unregister_code(KC_MNXT);
+        register_code(KC_MFFD);
+        unregister_code(KC_MFFD);
         return false; break;
       case PREV_SONG:
-        SEND_STRING(SS_TAP(X_MPRV));
-        SEND_STRING(SS_TAP(X_MRWD));
+        register_code(KC_MPRV);
+        unregister_code(KC_MPRV);
+        register_code(KC_MRWD);
+        unregister_code(KC_MRWD);
         return false; break;
       case PLOVER_TO_QWERTY:
         SEND_STRING("erfvik");
