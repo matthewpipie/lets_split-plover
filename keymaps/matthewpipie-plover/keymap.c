@@ -21,7 +21,8 @@ enum custom_keycodes {
   QWERTY_TO_PLOVER,
   VOLZERO,
   PREV_SONG,
-  NEXT_SONG
+  NEXT_SONG,
+  RAISE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -39,10 +40,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   
 [_QWERTY] = KEYMAP( \
-  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_Y,   KC_U,       KC_I,     KC_O,      KC_P,             KC_BSPC,    \
-  KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   KC_H,   KC_J,       KC_K,     KC_L,      KC_SCLN,          KC_QUOT,    \
-  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_N,   KC_M,       KC_COMM,  KC_DOT,    KC_SLSH,          KC_ENT,     \
-  VOLZERO, KC_VOLD, KC_VOLU, KC_LALT, KC_LCTL, KC_SPC, KC_SPC, MO(_RAISE), MO(_NAV), DF(_GAME), QWERTY_TO_PLOVER, DF(_NUMPAD) \
+  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_Y,   KC_U,  KC_I,     KC_O,      KC_P,             KC_BSPC,    \
+  KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   KC_H,   KC_J,  KC_K,     KC_L,      KC_SCLN,          KC_QUOT,    \
+  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_N,   KC_M,  KC_COMM,  KC_DOT,    KC_SLSH,          KC_ENT,     \
+  VOLZERO, KC_VOLD, KC_VOLU, KC_LALT, KC_LCTL, KC_SPC, KC_SPC, RAISE, MO(_NAV), DF(_GAME), QWERTY_TO_PLOVER, DF(_NUMPAD) \
 ),
 
 /* Raise
@@ -175,6 +176,9 @@ void persistent_default_layer_set(uint16_t default_layer) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     switch(keycode) {
+      case RAISE:
+        layer_on(_RAISE);
+        return false; break;
       case VOLZERO:
         register_code(KC_MUTE);
         unregister_code(KC_MUTE);
@@ -242,6 +246,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         keymap_config.nkro = 1;
         return false; break;
 	}
+  }
+  else {
+    switch(keycode) {
+      case RAISE:
+        layer_off(_RAISE);
+        layer_off(_FN);
+		layer_off(_NUMPAD);
+        return false; break;
+    }
   }
   return true;
 }
