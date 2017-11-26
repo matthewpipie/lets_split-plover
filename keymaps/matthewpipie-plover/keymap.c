@@ -23,7 +23,8 @@ enum custom_keycodes {
   PREV_SONG,
   NEXT_SONG,
   RAISE,
-  NUMPAD
+  NUMPAD,
+  SET_DEFAULT_TO_QWERTY
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -72,17 +73,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  | F10  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |DEFQWR|      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | RESET| DEBUG|  NKRO|      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
  
 [_FN] = KEYMAP( \
-  KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-  KC_TRNS, KC_F1,   KC_F2,             KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_TRNS, \
-  KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
-  RESET,   DEBUG,   MAGIC_TOGGLE_NKRO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
+  KC_TRNS, KC_TRNS,               KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+  KC_TRNS, KC_F1,                 KC_F2,             KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_TRNS, \
+  KC_TRNS, SET_DEFAULT_TO_QWERTY, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+  RESET,   DEBUG,                 MAGIC_TOGGLE_NKRO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  \
 ),
  
 /* Nav
@@ -174,6 +175,37 @@ void persistent_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
+void erfvol() {
+  register_code(KC_E);
+  register_code(KC_R);
+  register_code(KC_F);
+  register_code(KC_V);
+  register_code(KC_O);
+  register_code(KC_L);
+  
+  unregister_code(KC_E);
+  unregister_code(KC_R);
+  unregister_code(KC_F);
+  unregister_code(KC_V);
+  unregister_code(KC_O);
+  unregister_code(KC_L);
+}
+void erfvik() {
+  register_code(KC_E);
+  register_code(KC_R);
+  register_code(KC_F);
+  register_code(KC_V);
+  register_code(KC_I);
+  register_code(KC_K);
+  
+  unregister_code(KC_E);
+  unregister_code(KC_R);
+  unregister_code(KC_F);
+  unregister_code(KC_V);
+  unregister_code(KC_I);
+  unregister_code(KC_K);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     switch(keycode) {
@@ -206,48 +238,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_MRWD);
         return false; break;
       case PLOVER_TO_QWERTY:
-        register_code(KC_E);
-        register_code(KC_R);
-        register_code(KC_F);
-        register_code(KC_V);
-        register_code(KC_I);
-        register_code(KC_K);
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-        unregister_code(KC_F);
-        unregister_code(KC_V);
-        unregister_code(KC_I);
-        unregister_code(KC_K);
+        erfvik();
         
-		register_code(KC_E);
-        register_code(KC_R);
-        register_code(KC_F);
-        register_code(KC_V);
-        register_code(KC_O);
-        register_code(KC_L);
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-        unregister_code(KC_F);
-        unregister_code(KC_V);
-        unregister_code(KC_O);
-        unregister_code(KC_L);
-        persistent_default_layer_set(1UL<<_QWERTY);
+        erfvol();
+        
+        layer_off(_PLOVER);
+        layer_off(_GAME);
+        layer_off(_RAISE);
+        layer_off(_FN);
+        layer_off(_NAV);
         return false; break;
       case QWERTY_TO_PLOVER:
-        register_code(KC_E);
-        register_code(KC_R);
-        register_code(KC_F);
-        register_code(KC_V);
-        register_code(KC_I);
-        register_code(KC_K);
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-        unregister_code(KC_F);
-        unregister_code(KC_V);
-        unregister_code(KC_I);
-        unregister_code(KC_K);
-        persistent_default_layer_set(1UL<<_PLOVER);
+        erfvik();
+        
+        layer_on(_PLOVER);
+        layer_off(_GAME);
+        layer_off(_RAISE);
+        layer_off(_FN);
+        layer_off(_NAV);
         keymap_config.nkro = 1;
+        return false; break;
+      case SET_DEFAULT_TO_QWERTY:
+        persistent_default_layer_set(1UL<<_QWERTY);
         return false; break;
 	}
   }
@@ -256,7 +268,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case RAISE:
         layer_off(_RAISE);
         layer_off(_FN);
-		layer_off(_NUMPAD);
+        layer_off(_NUMPAD);
         return false; break;
       case NUMPAD:
         layer_off(_RAISE);
