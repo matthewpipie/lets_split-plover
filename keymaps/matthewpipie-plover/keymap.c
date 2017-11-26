@@ -175,7 +175,7 @@ void persistent_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
-void erfvol() {
+void erfvol(void) {
   register_code(KC_E);
   register_code(KC_R);
   register_code(KC_F);
@@ -190,7 +190,7 @@ void erfvol() {
   unregister_code(KC_O);
   unregister_code(KC_L);
 }
-void erfvik() {
+void erfvik(void) {
   register_code(KC_E);
   register_code(KC_R);
   register_code(KC_F);
