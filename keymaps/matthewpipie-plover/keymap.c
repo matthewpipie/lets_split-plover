@@ -17,13 +17,16 @@ extern keymap_config_t keymap_config;
 #define _NAV 10
 
 enum custom_keycodes {
-  PLOVER_TO_QWERTY = SAFE_RANGE,
-  QWERTY_TO_PLOVER,
+  PLOVER_ON = SAFE_RANGE,
+  PLOVER_OFF,
   VOLZERO,
   PREV_SONG,
   NEXT_SONG,
   RAISE,
-  NUMPAD,
+  NUMPAD_ON,
+  NUMPAD_OFF,
+  GAME_ON,
+  GAME_OFF,
   SET_DEFAULT_TO_QWERTY
 };
 
@@ -42,10 +45,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   
 [_QWERTY] = KEYMAP( \
-  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_Y,   KC_U,  KC_I,     KC_O,      KC_P,             KC_BSPC, \
-  KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   KC_H,   KC_J,  KC_K,     KC_L,      KC_SCLN,          KC_ENT,  \
-  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_N,   KC_M,  KC_COMM,  KC_DOT,    KC_SLSH,          KC_QUOT, \
-  VOLZERO, KC_VOLD, KC_VOLU, KC_LALT, KC_LCTL, KC_SPC, KC_SPC, RAISE, MO(_NAV), DF(_GAME), QWERTY_TO_PLOVER, NUMPAD   \
+  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_Y,   KC_U,  KC_I,     KC_O,    KC_P,      KC_BSPC,  \
+  KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,   KC_H,   KC_J,  KC_K,     KC_L,    KC_SCLN,   KC_ENT,   \
+  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_N,   KC_M,  KC_COMM,  KC_DOT,  KC_SLSH,   KC_QUOT,  \
+  VOLZERO, KC_VOLD, KC_VOLU, KC_LALT, KC_LCTL, KC_SPC, KC_SPC, RAISE, MO(_NAV), GAME_ON, PLOVER_ON, NUMPAD_ON \
 ),
 
 /* Raise
@@ -118,29 +121,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
  
 [_GAME] = KEYMAP( \
-  KC_ESC,  KC_Q,    KC_W,    KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I,    KC_O,    KC_P,    KC_BSPC,     \
-  KC_TAB,  KC_A,    KC_S,    KC_D, KC_F, KC_G,   KC_H, KC_J, KC_K,    KC_L,    KC_SLSH, KC_ENT,      \
-  KC_LSFT, KC_Z,    KC_X,    KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMM, KC_DOT,  KC_UP,   DF(_QWERTY), \
-  KC_LCTL, KC_LGUI, KC_LALT, KC_1, KC_2, KC_SPC, KC_3, KC_4, KC_5,    KC_LEFT, KC_DOWN, KC_RGHT      \
+  KC_ESC,  KC_Q,    KC_W,    KC_E, KC_R, KC_T,   KC_Y, KC_U, KC_I,    KC_O,    KC_P,    KC_BSPC,  \
+  KC_TAB,  KC_A,    KC_S,    KC_D, KC_F, KC_G,   KC_H, KC_J, KC_K,    KC_L,    KC_SLSH, KC_ENT,   \
+  KC_LSFT, KC_Z,    KC_X,    KC_C, KC_V, KC_B,   KC_N, KC_M, KC_COMM, KC_DOT,  KC_UP,   GAME_OFF, \
+  KC_LCTL, KC_LGUI, KC_LALT, KC_1, KC_2, KC_SPC, KC_3, KC_4, KC_5,    KC_LEFT, KC_DOWN, KC_RGHT   \
 ),
  
 /* Numpad
  * ,-----------------------------------------------------------------------------------.
  * |   Esc|XXXXXX| PrSc |ScrlLk|PBreak|XXXXXX|XXXXXX|  7   |  8   |  9   |  /   | Bksp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |XXXXXX|XXXXXX|  Ins | Home | PgUp |XXXXXX| NmLk |  4   |  5   |  6   |  *   |XXXXXX|
+ * |   Mod|XXXXXX|  Ins | Home | PgUp |XXXXXX| NmLk |  4   |  5   |  6   |  *   |XXXXXX|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|XXXXXX|  Del |  End | PgDn |XXXXXX|XXXXXX|  1   |  2   |  3   |  -   |QWERTY|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |XXXXXX|XXXXXX|XXXXXX|XXXXXX|XXXXXX| Space|Space |  0   |  .   |Enter |  +   |XXXXXX|
+ * |XXXXXX|XXXXXX|XXXXXX|   Alt|  Ctrl| Space|Space |  0   |  .   |Enter |  +   |XXXXXX|
  * `-----------------------------------------------------------------------------------'
  */
  
 [_NUMPAD] = KEYMAP( \
-  KC_ESC,  KC_NO, KC_PSCR, KC_SLCK, KC_PAUS, KC_NO,  KC_NO,   KC_P7, KC_P8,   KC_P9,   KC_PSLS, KC_BSPC,     \
-  KC_NO,   KC_NO, KC_INS,  KC_HOME, KC_PGUP, KC_NO,  KC_NLCK, KC_P4, KC_P5,   KC_P6,   KC_PAST, KC_NO,       \
-  KC_LSFT, KC_NO, KC_DEL,  KC_END,  KC_PGDN, KC_NO,  KC_NO,   KC_P1, KC_P2,   KC_P3,   KC_PMNS, DF(_QWERTY), \
-  KC_NO,   KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_SPC, KC_SPC,  KC_P0, KC_PDOT, KC_PENT, KC_PPLS, KC_NO        \
+  KC_ESC,  KC_NO, KC_PSCR, KC_SLCK, KC_PAUS, KC_NO,  KC_NO,   KC_P7, KC_P8,   KC_P9,   KC_PSLS, KC_BSPC,    \
+  KC_NO,   KC_NO, KC_INS,  KC_HOME, KC_PGUP, KC_NO,  KC_NLCK, KC_P4, KC_P5,   KC_P6,   KC_PAST, KC_NO,      \
+  KC_LSFT, KC_NO, KC_DEL,  KC_END,  KC_PGDN, KC_NO,  KC_NO,   KC_P1, KC_P2,   KC_P3,   KC_PMNS, NUMPAD_OFF, \
+  KC_NO,   KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_SPC, KC_SPC,  KC_P0, KC_PDOT, KC_PENT, KC_PPLS, KC_NO       \
 ),
  
 /* Plover
@@ -156,10 +159,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_PLOVER] = KEYMAP( \
-  KC_NO, KC_Q,  KC_W,  KC_E,  KC_R, KC_T, KC_Y, KC_U, KC_I,  KC_O,  KC_P,    KC_LBRC,          \
-  KC_NO, KC_A,  KC_S,  KC_D,  KC_F, KC_G, KC_H, KC_J, KC_K,  KC_L,  KC_SCLN, KC_QUOT,          \
-  KC_NO, KC_1,  KC_2,  KC_3,  KC_4, KC_5, KC_6, KC_7, KC_8,  KC_9,  KC_0,    PLOVER_TO_QWERTY, \
-  KC_NO, KC_NO, KC_NO, KC_NO, KC_C, KC_V, KC_N, KC_M, KC_NO, KC_NO, KC_NO,   KC_NO             \
+  KC_NO, KC_Q,  KC_W,  KC_E,  KC_R, KC_T, KC_Y, KC_U, KC_I,  KC_O,  KC_P,    KC_LBRC,    \
+  KC_NO, KC_A,  KC_S,  KC_D,  KC_F, KC_G, KC_H, KC_J, KC_K,  KC_L,  KC_SCLN, KC_QUOT,    \
+  KC_NO, KC_1,  KC_2,  KC_3,  KC_4, KC_5, KC_6, KC_7, KC_8,  KC_9,  KC_0,    PLOVER_OFF, \
+  KC_NO, KC_NO, KC_NO, KC_NO, KC_C, KC_V, KC_N, KC_M, KC_NO, KC_NO, KC_NO,   KC_NO       \
 ),
 
 };
@@ -212,9 +215,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case RAISE:
         layer_on(_RAISE);
         return false; break;
-      case NUMPAD:
+      case NUMPAD_ON:
         layer_on(_NUMPAD);
         return false; break;
+	  case GAME_ON:
+		layer_on(_GAME);
+		return false; break;
+	  case NUMPAD_OFF:
+        layer_off(_NUMPAD);
+        return false; break;
+	  case GAME_OFF:
+		layer_off(_GAME);
+		return false; break;
       case VOLZERO:
         register_code(KC_MUTE);
         unregister_code(KC_MUTE);
@@ -237,7 +249,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_code(KC_MRWD);
         unregister_code(KC_MRWD);
         return false; break;
-      case PLOVER_TO_QWERTY:
+      case PLOVER_OFF:
         erfvik();
         
         erfvol();
@@ -248,7 +260,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_FN);
         layer_off(_NAV);
         return false; break;
-      case QWERTY_TO_PLOVER:
+      case PLOVER_ON:
         erfvik();
         
         layer_on(_PLOVER);
@@ -270,7 +282,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_FN);
         layer_off(_NUMPAD);
         return false; break;
-      case NUMPAD:
+      case NUMPAD_ON:
         layer_off(_RAISE);
         layer_off(_FN);
         return false; break;
