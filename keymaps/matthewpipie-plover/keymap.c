@@ -57,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  \   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |  Caps|   ?  |   ?  |   ?  |   ?  |   ?  |   ?  |      |      |      |      |
+ * |      |  Caps| Mute |   ?  |   ?  |   ?  |   ?  |   ?  |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |MPause| MPrev| MNext|      |      |      |      |      |      |XXXXXX|XXXXXX|  FN  |
  * `-----------------------------------------------------------------------------------'
@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_RAISE] = KEYMAP( \
   KC_GRV,  KC_TAB,    KC_NO,     KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_DEL,  \
   KC_TRNS, KC_1,      KC_2,      KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSLS, \
-  KC_TRNS, KC_CAPS,   KC_NO,     KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+  KC_TRNS, KC_CAPS,   KC_MUTE,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
   KC_MPLY, PREV_SONG, NEXT_SONG, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,   KC_NO,   MO(_FN)  \
 ),
 
@@ -167,37 +167,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-#ifdef AUDIO_ENABLE
-#float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
-#float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
-#float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
-#endif
-
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
 }
 
-void erfvol(void) {
+void plover_off_keymap(void) {
   register_code(KC_E);
   register_code(KC_R);
   register_code(KC_F);
   register_code(KC_V);
-  register_code(KC_O);
-  register_code(KC_L);
+  register_code(KC_Y);
+  register_code(KC_U);
   
   unregister_code(KC_E);
   unregister_code(KC_R);
   unregister_code(KC_F);
   unregister_code(KC_V);
-  unregister_code(KC_O);
-  unregister_code(KC_L);
+  unregister_code(KC_Y);
+  unregister_code(KC_U);
 }
-void erfvik(void) {
+void plover_on_keymap(void) {
   register_code(KC_E);
   register_code(KC_R);
   register_code(KC_F);
   register_code(KC_V);
+  register_code(KC_H);
   register_code(KC_I);
   register_code(KC_K);
   
@@ -205,6 +200,7 @@ void erfvik(void) {
   unregister_code(KC_R);
   unregister_code(KC_F);
   unregister_code(KC_V);
+  unregister_code(KC_H);
   unregister_code(KC_I);
   unregister_code(KC_K);
 }
@@ -228,14 +224,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		layer_off(_GAME);
 		return false; break;
       case VOLZERO:
-        register_code(KC_MUTE);
-        unregister_code(KC_MUTE);
         for (int i = 0; i < 50; i++) {
   	      register_code(KC_VOLD);
           unregister_code(KC_VOLD);
         }
-        register_code(KC_MUTE);
-        unregister_code(KC_MUTE);
         return false; break;
       case NEXT_SONG:
         register_code(KC_MNXT);
@@ -250,9 +242,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_MRWD);
         return false; break;
       case PLOVER_OFF:
-        erfvik();
-        
-        erfvol();
+        plover_off_keymap();
         
         layer_off(_PLOVER);
         layer_off(_GAME);
@@ -261,7 +251,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_NAV);
         return false; break;
       case PLOVER_ON:
-        erfvik();
+        plover_on_keymap();
         
         layer_on(_PLOVER);
         layer_off(_GAME);
