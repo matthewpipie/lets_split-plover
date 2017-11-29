@@ -185,11 +185,11 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 void vlc_code(uint16_t keycode) {
-	register_code(KC_LCTL);
-	register_code(KC_LSFT);
+	//register_code(KC_LCTL);
+	//register_code(KC_LSFT);
 	register_code(keycode);
-	unregister_code(KC_LCTL);
-	unregister_code(KC_LSFT);
+	//unregister_code(KC_LCTL);
+	//unregister_code(KC_LSFT);
 	unregister_code(keycode);
 }
 
@@ -285,37 +285,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         persistent_default_layer_set(1UL<<_QWERTY);
         return false; break;
 	  case VLC_FASTER:
-	    vlc_code(KC_F2);
+	    vlc_code(KC_F13);
 		return false; break;
 	  case VLC_SLOWER:
-	    vlc_code(KC_F3);
+	    vlc_code(KC_F14);
 		return false; break;
 	  case VLC_RESET_SPEED:
-	    vlc_code(KC_F4);
+	    vlc_code(KC_F15);
 		return false; break;
 	  case VLC_PAUSEPLAY:
-	    vlc_code(KC_F1);
+	    vlc_code(KC_F16);
 		return false; break;
 	  case VLC_RESTART:
-	    vlc_code(KC_F7);
+	    vlc_code(KC_F17);
 		return false; break;
 	  case VLC_FINEFASTER:
-	    vlc_code(KC_F5);
+	    vlc_code(KC_F22);
 		return false; break;
 	  case VLC_FINESLOWER:
-	    vlc_code(KC_F6);
+	    vlc_code(KC_F23);
 		return false; break;
 	  case VLC_SMALLBACK:
-	    vlc_code(KC_F8);
+	    vlc_code(KC_F18);
 		return false; break;
 	  case VLC_SMALLFWD:
-	    vlc_code(KC_F9);
+	    vlc_code(KC_F19);
 		return false; break;
 	  case VLC_MEDBACK:
-	    vlc_code(KC_F10);
+	    vlc_code(KC_F20);
 		return false; break;
 	  case VLC_MEDFWD:
-	    vlc_code(KC_F11);
+	    vlc_code(KC_F21);
 		return false; break;
 	}
   }
