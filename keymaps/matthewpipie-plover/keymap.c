@@ -32,7 +32,6 @@ enum custom_keycodes {
   VLC_SLOWER,
   VLC_RESET_SPEED,
   VLC_PAUSEPLAY,
-  VLC_RESTART,
   VLC_FINESLOWER,
   VLC_FINEFASTER,
   VLC_SMALLBACK,
@@ -166,15 +165,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |ResetS|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |QWERTY|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Pause|Restar|FSlowe|FFaste|   C  |   V  |   N  |   M  |SmallB|SmallF|MedBak|MedFwd|
+ * | Pause| Pause|FSlowe|FFaste|   C  |   V  |   N  |   M  |SmallB|SmallF|MedBak|MedFwd|
  * `-----------------------------------------------------------------------------------'
  */
 
 [_PLOVER] = KEYMAP( \
-  VLC_FASTER,      KC_Q,        KC_W,           KC_E,           KC_R, KC_T, KC_Y, KC_U, KC_I,          KC_O,         KC_P,        KC_LBRC,    \
-  VLC_SLOWER,      KC_A,        KC_S,           KC_D,           KC_F, KC_G, KC_H, KC_J, KC_K,          KC_L,         KC_SCLN,     KC_QUOT,    \
-  VLC_RESET_SPEED, KC_1,        KC_2,           KC_3,           KC_4, KC_5, KC_6, KC_7, KC_8,          KC_9,         KC_0,        PLOVER_OFF, \
-  VLC_PAUSEPLAY,   VLC_RESTART, VLC_FINESLOWER, VLC_FINEFASTER, KC_C, KC_V, KC_N, KC_M, VLC_SMALLBACK, VLC_SMALLFWD, VLC_MEDBACK, VLC_MEDFWD  \
+  VLC_FASTER,      KC_Q,          KC_W,           KC_E,           KC_R, KC_T, KC_Y, KC_U, KC_I,          KC_O,         KC_P,        KC_LBRC,    \
+  VLC_SLOWER,      KC_A,          KC_S,           KC_D,           KC_F, KC_G, KC_H, KC_J, KC_K,          KC_L,         KC_SCLN,     KC_QUOT,    \
+  VLC_RESET_SPEED, KC_1,          KC_2,           KC_3,           KC_4, KC_5, KC_6, KC_7, KC_8,          KC_9,         KC_0,        PLOVER_OFF, \
+  VLC_PAUSEPLAY,   VLC_PAUSEPLAY, VLC_FINESLOWER, VLC_FINEFASTER, KC_C, KC_V, KC_N, KC_M, VLC_SMALLBACK, VLC_SMALLFWD, VLC_MEDBACK, VLC_MEDFWD  \
 ),
 
 };
@@ -185,12 +184,14 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 void vlc_code(uint16_t keycode) {
-	//register_code(KC_LCTL);
-	//register_code(KC_LSFT);
+	register_code(KC_LCTL);
+	register_code(KC_LSFT);
+	register_code(KC_LALT);
 	register_code(keycode);
-	//unregister_code(KC_LCTL);
-	//unregister_code(KC_LSFT);
 	unregister_code(keycode);
+	unregister_code(KC_LALT);
+	unregister_code(KC_LSFT);
+	unregister_code(KC_LCTL);
 }
 
 void plover_off_keymap(void) {
@@ -285,37 +286,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         persistent_default_layer_set(1UL<<_QWERTY);
         return false; break;
 	  case VLC_FASTER:
-	    vlc_code(KC_F13);
+	    vlc_code(KC_2);
 		return false; break;
 	  case VLC_SLOWER:
-	    vlc_code(KC_F14);
+	    vlc_code(KC_3);
 		return false; break;
 	  case VLC_RESET_SPEED:
-	    vlc_code(KC_F15);
+	    vlc_code(KC_4);
 		return false; break;
 	  case VLC_PAUSEPLAY:
-	    vlc_code(KC_F16);
-		return false; break;
-	  case VLC_RESTART:
-	    vlc_code(KC_F17);
+	    vlc_code(KC_1);
 		return false; break;
 	  case VLC_FINEFASTER:
-	    vlc_code(KC_F22);
+	    vlc_code(KC_5);
 		return false; break;
 	  case VLC_FINESLOWER:
-	    vlc_code(KC_F23);
+	    vlc_code(KC_6);
 		return false; break;
 	  case VLC_SMALLBACK:
-	    vlc_code(KC_F18);
+	    vlc_code(KC_8);
 		return false; break;
 	  case VLC_SMALLFWD:
-	    vlc_code(KC_F19);
+	    vlc_code(KC_9);
 		return false; break;
 	  case VLC_MEDBACK:
-	    vlc_code(KC_F20);
+	    vlc_code(KC_0);
 		return false; break;
 	  case VLC_MEDFWD:
-	    vlc_code(KC_F21);
+	    vlc_code(KC_7);
 		return false; break;
 	}
   }
